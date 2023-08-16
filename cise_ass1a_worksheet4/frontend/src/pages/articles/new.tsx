@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
 import formStyles from '../../../styles/Form.module.scss';
+import { link } from "fs";
 
 const NewDiscussion = () => {
     const [title, setTitle] = useState("");
@@ -11,17 +12,47 @@ const NewDiscussion = () => {
     const [linkedDiscussion, setLinkedDiscussion] = useState("");
     const submitNewArticle = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(
-            JSON.stringify({
-                title,
-                authors,
-                source,
-                publication_year: pubYear,
-                doi,
-                summary,
-                linked_discussion: linkedDiscussion,
-            })
-        );
+        // console.log(
+        //     JSON.stringify({
+        //         title,
+        //         authors,
+        //         source,
+        //         publication_year: pubYear,
+        //         doi,
+        //         summary,
+        //         linked_discussion: linkedDiscussion,
+        //     })
+        // );
+        const articleData = {
+            title,
+            authors,
+            source,
+            publication_year: pubYear,
+            doi,
+            summary,
+            linked_discussion: linkedDiscussion,
+        };
+
+        try {
+            const response = await fetch('api/articles', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(articleData),
+            });
+
+            if(response.ok) {
+                alert('Article added successfully!')
+            } else {
+                alert('Error adding article!');
+            }
+
+        } catch (error) {
+            alert(`An error occurred:${error}`);
+        }
+
+
     };
     // Some helper methods for the authors array
     const addAuthor = () => {
