@@ -1,0 +1,15 @@
+.navbar {
+    display: flex;
+    position: relative;
+    top: 0;
+    flex-direction: row;
+    width: 100%;
+    background-color: darkblue;
+    align-items: center;
+    color: aliceblue;
+    font-size: 1.5em;
+    font-weight: bold;
+    transition: top 0.5s;
+    height: fit-content;
+    }
+    
