@@ -12,17 +12,17 @@ const NewDiscussion = () => {
     const [linkedDiscussion, setLinkedDiscussion] = useState("");
     const submitNewArticle = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // console.log(
-        //     JSON.stringify({
-        //         title,
-        //         authors,
-        //         source,
-        //         publication_year: pubYear,
-        //         doi,
-        //         summary,
-        //         linked_discussion: linkedDiscussion,
-        //     })
-        // );
+        console.log(
+            JSON.stringify({
+                title,
+                authors,
+                source,
+                publication_year: pubYear,
+                doi,
+                summary,
+                linked_discussion: linkedDiscussion,
+            })
+        );
         const articleData = {
             title,
             authors,
@@ -33,8 +33,10 @@ const NewDiscussion = () => {
             linked_discussion: linkedDiscussion,
         };
 
+        console.log(articleData);
+
         try {
-            const response = await fetch('api/articles', {
+            const response = await fetch('http://localhost:8082/api/articles', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -42,7 +44,7 @@ const NewDiscussion = () => {
                 body: JSON.stringify(articleData),
             });
 
-            if(response.ok) {
+            if (response.ok) {
                 alert('Article added successfully!')
             } else {
                 alert('Error adding article!');
@@ -152,6 +154,20 @@ const NewDiscussion = () => {
                         setDoi(event.target.value);
                     }}
                 />
+                <label htmlFor="linkedDiscussion">Linked Discussion:</label>
+                <select
+                    className={formStyles.formItem}
+                    name="linkedDiscussion"
+                    id="linkedDiscussion"
+                    value={linkedDiscussion}
+                    onChange={(event) => {
+                        setLinkedDiscussion(event.target.value);
+                    }}
+                >
+                    <option value="">Select SE practice...</option>
+                    <option value="TDD">TDD</option>
+                    <option value="Mob Programming">Mob Programming</option>
+                </select>
                 <label htmlFor="summary">Summary:</label>
                 <textarea
                     className={formStyles.formTextArea}

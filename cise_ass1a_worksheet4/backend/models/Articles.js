@@ -6,24 +6,24 @@ const ArticleSchema = new mongoose.Schema({
     required: true
   },
   authors: {
-    type: String,
+    type: [String],
   },
   source: {
     type: String,
     required: true
   },
-  pubyear: {
-    type: String,
+  publication_year: { // Changed to match JSON key
+    type: Number,
     required: true
   },
   doi: {
     type: String,
   },
-  claim: {
+  summary: {
     type: String,
   },
-  evidence: {
-    type: String
+  linked_discussion: {
+    type: String,
   },
   updated_date: {
     type: Date,

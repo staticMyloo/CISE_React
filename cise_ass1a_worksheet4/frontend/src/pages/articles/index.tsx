@@ -6,12 +6,12 @@ import data from '../../utils/dummydata.json';
 interface ArticlesInterface {
     id: string;
     title: string;
-    authors: string;
+    authors: [string];
     source: string;
-    pubyear: string;
+    publication_year: Number;
     doi: string;
-    claim: string;
-    evidence: string;
+    summary: string;
+    linked_discussion: string;
 }
 
 type ArticlesProps = {
@@ -23,10 +23,10 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         { key: "title", label: "Title" },
         { key: "authors", label: "Authors" },
         { key: "source", label: "Source" },
-        { key: "pubyear", label: "Publication Year" },
+        { key: "publication_year", label: "Publication Year" },
         { key: "doi", label: "DOI" },
-        { key: "claim", label: "Claim" },
-        { key: "evidence", label: "Evidence" },
+        { key: "summary", label: "Summary"},
+        { key: "linked_discussion", label: "Linked Discussion" },
     ];
     return (
         <div className="container">
@@ -36,22 +36,28 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         </div>
     );
 };
+
 export const getStaticProps: GetStaticProps<ArticlesProps> = async (_) => {
+    const res = await fetch('http://localhost:8082/api/articles'); // Adjust the URL to match your server
+    const data = await res.json();
+  
     // Map the data to ensure all articles have consistent property names
-    const articles = data.articles.map((article) => ({
-        id: article.id ?? article._id,
-        title: article.title,
-        authors: article.authors,
-        source: article.source,
-        pubyear: article.pubyear,
-        doi: article.doi,
-        claim: article.claim,
-        evidence: article.evidence,
+    const articles = data.map((article: any) => ({
+      id: article._id,
+      title: article.title,
+      authors: article.authors.join(', '), // If authors is an array
+      source: article.source,
+      publication_year: article.publication_year.toString(), // If pubyear is a number
+      doi: article.doi,
+      summary: article.summary,
+      linked_discussion: article.linked_discussion,
     }));
+  
     return {
-        props: {
-            articles,
-        },
+      props: {
+        articles,
+      },
     };
-};
+  };
+
 export default Articles;

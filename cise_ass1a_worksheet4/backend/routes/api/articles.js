@@ -18,7 +18,8 @@ router.post('/', (req, res) => {
   Article.create(req.body)
     .then(article => res.json({ msg: 'Article added successfully' }))
     .catch(err => {
-      console.error(err); // Log the actual error
+      console.error('Request body:', req.body);
+      console.error('Error:', err.message); // Log the actual error message
       res.status(400).json({ error: 'Unable to add this article' });
     });
 });
